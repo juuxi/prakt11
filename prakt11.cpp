@@ -32,6 +32,65 @@ p = getchar();
 } while (p != '\n' && p != EOF);
 }
 
+void makeSpiral1(int num1, int num2, bool &count1, bool &count2, bool &countfailure, int result[20][20]){
+            int g = 1;
+            int z = 0;
+            bool finish = false;
+            if (count1 == false || count2 == false) countfailure = true;
+            else {
+                while(g <= (num1 * num2)){
+            for (int i = 0+z; i < num1-z; i++)
+            {
+                if (finish == false)
+                result[i][0+z] = g;
+                if(g == num1*num2) {finish = true; break;}
+                g++;
+            }
+            for (int j = 1+z; j < num2-z; j++)
+            {
+                if (finish == false)
+                result[num1-1-z][j] = g;
+                if(g == num1*num2) {finish = true; break;}
+                g++;
+            }
+            for(int f = num1-2-z; f > -1+z; f--)
+            {
+                if (finish == false)
+                result[f][num2-1-z] = g;
+                if(g == num1*num2) {finish = true; break;}
+                g++;
+            }
+            for(int v = num2-1-z; v > 1+z; v--)
+            {
+                if (finish == false)
+                result[0+z][v-1] = g;
+                if(g == num1*num2) {finish = true; break;}
+                g++;
+            }
+            if (finish == true) break;
+            else z++;
+                }
+            }
+}
+
+void changeLine(int num1, int num2, int result[20][20])
+{
+    int res2[20];    
+    for(int i = 0; i < num2; i++)
+    {
+        int l = 0;
+        for(int j = num1-1; j > -1; j--, l++)
+        {
+            res2[l] = result[j][i];
+        }
+        l = 0;
+        for(int k = 0; k < num1; k++, l++)
+        {
+            result[k][i] = res2[l];
+        }
+    }
+}
+
 int main()
 {
     int pos = 1, num1 = 0, num2 = 0, a = 0, i = 0, g = 1, z = 0, counter = 0;
@@ -141,43 +200,9 @@ int main()
         }
 
         if(pos == 3){
-            g = 1;
-            z = 0;
-            finish = false;
-            if (count1 == false || count2 == false) countfailure = true;
-            else {
-                while(g <= (num1 * num2)){
-            for (i = 0+z; i < num1-z; i++)
+            makeSpiral1(num1, num2, count1, count2, countfailure, result);
+            if(!countfailure)
             {
-                if (finish == false)
-                result[i][0+z] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for (int j = 1+z; j < num2-z; j++)
-            {
-                if (finish == false)
-                result[num1-1-z][j] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for(int f = num1-2-z; f > -1+z; f--)
-            {
-                if (finish == false)
-                result[f][num2-1-z] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for(int v = num2-1-z; v > 1+z; v--)
-            {
-                if (finish == false)
-                result[0+z][v-1] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            if (finish == true) break;
-            else z++;
-                }
             system("clear");
             for(int j = 0; j < num2; j++)
             {
@@ -198,7 +223,7 @@ int main()
             if(ift == 116)
             {
                 FILE* in;
-                in = fopen("spiral.txt", "wt");
+                in = fopen("spiral.txt", "wb");
                 if(!in) printf("Ошибка при открытии файла\n");
                 else 
                 {
@@ -213,61 +238,30 @@ int main()
             }
             getchar();
             printf("\n\n");    
-            }    
+            }  
+        }  
 
         } 
 
         if(pos == 4){
-            g = 1;
-            z = 0;
-            finish = false;
-            if (count1 == false || count2 == false) countfailure = true;
-            else {
-                while(g <= (num1 * num2)){
-            for(int f = num1-1-z; f > -1+z; f--)
+            makeSpiral1(num1, num2, count1, count2, countfailure, result);
+            changeLine(num1, num2, result);
+            if(!countfailure)
             {
-                if (finish == false)
-                result[f][0+z] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for (int j = 1+z; j < num2-z; j++)
-            {
-                if (finish == false)
-                result[0+z][j] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for (i = 1+z; i < num1-z; i++)
-            {
-                if (finish == false)
-                result[i][num2-1-z] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }         
-            for(int v = num2-1-z; v > 1+z; v--)
-            {
-                if (finish == false)
-                result[num1-1-z][v-1] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            if (finish == true) break;
-            else z++;
+                system("clear");
+                for(int j = 0; j < num2; j++)
+                {
+                for(int i = 0; i < num1; i++)
+                {
+                if(result[i][j] < 10) printf("  %d ", result[i][j]);
+                else{
+                if(result[i][j] < 100) printf(" %d ", result[i][j]);
+                else printf("%d ", result[i][j]);
                 }
-            for(int j = 0; j < num2; j++)
-            {
-            for(int i = 0; i < num1; i++)
-            {
-            if(result[i][j] < 10) printf("  %d ", result[i][j]);
-            else{
-            if(result[i][j] < 100) printf(" %d ", result[i][j]);
-            else printf("%d ", result[i][j]);
-            }
-            }
-            printf("\n");
-            }
-            printf("\n\n");    
+                }
+                printf("\n");
+                }
+                printf("\n\n");  
             }        
         } 
 
@@ -403,7 +397,7 @@ int main()
         if (pos == 7)
         {
             FILE* out;
-                out = fopen("spiral.txt", "rt");
+                out = fopen("spiral.txt", "rb");
                 if(!out) printf("Ошибка при открытии файла\n");
                 else 
                 {
@@ -430,7 +424,6 @@ int main()
                     }                    
                 }            
         }
-    }
     }
     return 0;
 }
