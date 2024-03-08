@@ -91,6 +91,24 @@ void changeLine(int num1, int num2, int result[20][20])
     }
 }
 
+void changeColumn(int num1, int num2, int result[20][20])
+{
+    int res2[20];    
+    for(int i = 0; i < num1; i++)
+    {
+        int l = 0;
+        for(int j = num2-1; j > -1; j--, l++)
+        {
+            res2[l] = result[i][j];
+        }
+        l = 0;
+        for(int k = 0; k < num2; k++, l++)
+        {
+            result[i][k] = res2[l];
+        }
+    }
+}
+
 int main()
 {
     int pos = 1, num1 = 0, num2 = 0, a = 0, i = 0, g = 1, z = 0, counter = 0;
@@ -234,9 +252,9 @@ int main()
                     if(!ifwritten) printf("Ошибка при записи\n");
                     else printf("Успешно\n");
                     fclose(in);
+                    getchar();
                 }
             }
-            getchar();
             printf("\n\n");    
             }  
         }  
@@ -261,58 +279,37 @@ int main()
                 }
                 printf("\n");
                 }
+                printf("Нажмите t для сохранения спирали в текстовом формате\n");
+                disable_waiting_for_enter();
+                char ift = getchar();
+                restore_terminal_settings();
+                if(ift == 116)
+                {
+                    FILE* in;
+                    in = fopen("spiral.txt", "wb");
+                    if(!in) printf("Ошибка при открытии файла\n");
+                    else 
+                    {
+                        int ifwritten = 0;
+                        fwrite(&num1, sizeof(num1), 1, in);
+                        fwrite(&num2, sizeof(num2), 1, in);
+                        ifwritten = fwrite(result, sizeof(int), sizeof(result), in);
+                        if(!ifwritten) printf("Ошибка при записи\n");
+                        else printf("Успешно\n");
+                        fclose(in);
+                        getchar();
+                    }
+                }
                 printf("\n\n");  
             }        
         } 
 
         if(pos == 5){
-            if (count1 == false || count2 == false) countfailure = true;
-            else {
-            if (num1 != num2) toolow = true;
-            else{
-            int cx = 0, cy = 0;
-            if (num1 % 2 == 0) cx = (num1/2)-1; else cx = (num1/2);
-            if (num2 % 2 == 0) cy = (num2/2)-1; else cy = (num2/2);
-            g = 1;
-            result[cx][cy] = g;
-            g++;
-            z = 0;
-            counter = 0;
-            finish = false;            
-                while(g <= (num1 * num2)){
-            for (i = 0; i < 1+z; i++)
+            makeSpiral1(num1, num2, count1, count2, countfailure, result);
+            changeColumn(num1, num2, result);
+            if(!countfailure)
             {
-                if (finish == false)
-                result[cx-counter][cy+1+i-counter] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for (int j = 0; j < 1+z; j++)
-            {
-                if (finish == false)
-                result[cx+1-counter+j][cy+1+counter] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for(int f = 0; f < 2+z; f++)
-            {
-                if (finish == false)
-                result[cx+1+counter][cy-f+z-counter] = g;
-                if (g == 17) 
-                r = false;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for(int v = 0; v < 2+z; v++)
-            {
-                if (finish == false)
-                result[cx-v+counter][cy-1-counter] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            if (finish == true) break;
-            else {z+=2; counter++;}
-                }
+                system("clear");
             for(int j = 0; j < num2; j++)
             {
             for(int i = 0; i < num1; i++)
@@ -325,59 +322,38 @@ int main()
             }
             printf("\n");   
             }
-            printf("\n\n");
+            printf("Нажмите t для сохранения спирали в текстовом формате\n");
+            disable_waiting_for_enter();
+            char ift = getchar();
+            restore_terminal_settings();
+            if(ift == 116)
+            {
+                FILE* in;
+                in = fopen("spiral.txt", "wb");
+                if(!in) printf("Ошибка при открытии файла\n");
+                else 
+                {
+                    int ifwritten = 0;
+                    fwrite(&num1, sizeof(num1), 1, in);
+                    fwrite(&num2, sizeof(num2), 1, in);
+                    ifwritten = fwrite(result, sizeof(int), sizeof(result), in);
+                    if(!ifwritten) printf("Ошибка при записи\n");
+                    else printf("Успешно\n");
+                    fclose(in);
+                    getchar();
+                }
             }
+            printf("\n\n");
             }
     }
 
         if(pos == 6){
-            if (count1 == false || count2 == false) countfailure = true;
-            else {
-            if (num1 != num2) toolow = true;
-            else{
-            int cx = 0, cy = 0;
-            if (num1 % 2 == 0) cx = (num1/2)-1; else cx = (num1/2);
-            if (num2 % 2 == 0) cy = (num2/2)-1; else cy = (num2/2);
-            g = 1;
-            result[cx][cy] = g;
-            g++;
-            z = 0;
-            counter = 0;
-            finish = false;            
-                while(g <= (num1 * num2)){
-            for (i = 0; i < 1+z; i++)
+            makeSpiral1(num1, num2, count1, count2, countfailure, result);
+            changeLine(num1, num2, result);
+            changeColumn(num1, num2, result);
+            if(!countfailure)
             {
-                if (finish == false)
-                result[cx+1+i-counter][cy-counter] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for (int j = 0; j < 1+z; j++)
-            {
-                if (finish == false)
-                result[cx+1+counter][cy+1+j-counter] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for(int f = 0; f < 2+z; f++)
-            {
-                if (finish == false)
-                result[cx+counter-f][cy+1+counter] = g;
-                if (g == 17) 
-                r = false;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            for(int v = 0; v < 2+z; v++)
-            {
-                if (finish == false)
-                result[cx-1-counter][cy+counter-v] = g;
-                if(g == num1*num2) {finish = true; break;}
-                g++;
-            }
-            if (finish == true) break;
-            else {z+=2; counter++;}
-                }
+                system("clear");
             for(int j = 0; j < num2; j++)
             {
             for(int i = 0; i < num1; i++)
@@ -390,8 +366,28 @@ int main()
             }
             printf("\n");   
             }
-            printf("\n\n");
+            printf("Нажмите t для сохранения спирали в текстовом формате\n");
+            disable_waiting_for_enter();
+            char ift = getchar();
+            restore_terminal_settings();
+            if(ift == 116)
+            {
+                FILE* in;
+                in = fopen("spiral.txt", "wb");
+                if(!in) printf("Ошибка при открытии файла\n");
+                else 
+                {
+                    int ifwritten = 0;
+                    fwrite(&num1, sizeof(num1), 1, in);
+                    fwrite(&num2, sizeof(num2), 1, in);
+                    ifwritten = fwrite(result, sizeof(int), sizeof(result), in);
+                    if(!ifwritten) printf("Ошибка при записи\n");
+                    else printf("Успешно\n");
+                    fclose(in);
+                    getchar();
+                }
             }
+            printf("\n\n");
             }
         }
         if (pos == 7)
