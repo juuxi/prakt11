@@ -109,6 +109,31 @@ void changeColumn(int num1, int num2, int result[20][20])
     }
 }
 
+void writeInText(int num2, int num1, int result[20][20])
+{
+    FILE* in = fopen("spiralT.txt", "w");
+    if(!in) printf("Ошибка при открытии файла\n");
+    else 
+    {
+        fprintf(in, "%d ", num2);
+        fprintf(in, "%d ", num1);
+        fprintf(in, "\n");
+        for(int j = 0; j < num2; j++)
+        {
+        for(int i = 0; i < num1; i++)
+        {
+        if(result[i][j] < 10) fprintf(in, "  %d ", result[i][j]);
+        else{
+        if(result[i][j] < 100) fprintf(in, " %d ", result[i][j]);
+        else fprintf(in, "%d ", result[i][j]);
+        }
+        }
+        fprintf(in, "\n");
+        }
+        fclose(in);
+    }
+}
+
 int main()
 {
     int pos = 1, num1 = 0, num2 = 0, a = 0, i = 0, g = 1, z = 0, counter = 0;
@@ -234,11 +259,11 @@ int main()
             }
             printf("\n");
             }
-            printf("Нажмите t для сохранения спирали в текстовом формате\n");
-            disable_waiting_for_enter();
+            printf("Нажмите b для сохранения спирали в бинарном формате, t для сохранения в текстовом формате или любую другую клавишу для возврата в меню\n");
+            disable_waiting_for_enter(); 
             char ift = getchar();
             restore_terminal_settings();
-            if(ift == 116)
+            if(ift == 98)
             {
                 FILE* in;
                 in = fopen("spiral.txt", "wb");
@@ -254,6 +279,10 @@ int main()
                     fclose(in);
                     getchar();
                 }
+            }
+            if(ift == 116)
+            {
+                writeInText(num2, num1, result);
             }
             printf("\n\n");    
             }  
@@ -279,11 +308,11 @@ int main()
                 }
                 printf("\n");
                 }
-                printf("Нажмите t для сохранения спирали в текстовом формате\n");
+                printf("Нажмите b для сохранения спирали в бинарном формате, t для сохранения в текстовом формате или любую другую клавишу для возврата в меню\n");
                 disable_waiting_for_enter();
                 char ift = getchar();
                 restore_terminal_settings();
-                if(ift == 116)
+                if(ift == 98)
                 {
                     FILE* in;
                     in = fopen("spiral.txt", "wb");
@@ -299,6 +328,10 @@ int main()
                         fclose(in);
                         getchar();
                     }
+                }
+                if(ift == 116)
+                {
+                    writeInText(num2, num1, result);
                 }
                 printf("\n\n");  
             }        
@@ -322,11 +355,11 @@ int main()
             }
             printf("\n");   
             }
-            printf("Нажмите t для сохранения спирали в текстовом формате\n");
+            printf("Нажмите b для сохранения спирали в бинарном формате, t для сохранения в текстовом формате или любую другую клавишу для возврата в меню\n");
             disable_waiting_for_enter();
             char ift = getchar();
             restore_terminal_settings();
-            if(ift == 116)
+            if(ift == 98)
             {
                 FILE* in;
                 in = fopen("spiral.txt", "wb");
@@ -342,6 +375,10 @@ int main()
                     fclose(in);
                     getchar();
                 }
+            }
+            if(ift == 116)
+            {
+                writeInText(num2, num1, result);
             }
             printf("\n\n");
             }
@@ -366,11 +403,11 @@ int main()
             }
             printf("\n");   
             }
-            printf("Нажмите t для сохранения спирали в текстовом формате\n");
+            printf("Нажмите b для сохранения спирали в бинарном формате, t для сохранения в текстовом формате или любую другую клавишу для возврата в меню\n");
             disable_waiting_for_enter();
             char ift = getchar();
             restore_terminal_settings();
-            if(ift == 116)
+            if(ift == 98)
             {
                 FILE* in;
                 in = fopen("spiral.txt", "wb");
@@ -387,11 +424,20 @@ int main()
                     getchar();
                 }
             }
+            if(ift == 116)
+            {
+                writeInText(num2, num1, result);
+            }
             printf("\n\n");
             }
         }
         if (pos == 7)
         {
+            printf("Введите t для вывода спирали из текстового файла, b для вывода из бинарного файла или любую другую клавишу для возврата в меню\n");
+            disable_waiting_for_enter();
+            char ift = getchar();
+            restore_terminal_settings();
+            if(ift == 98){
             FILE* out;
                 out = fopen("spiral.txt", "rb");
                 if(!out) printf("Ошибка при открытии файла\n");
@@ -418,7 +464,31 @@ int main()
                         }
                         fclose(out);
                     }                    
-                }            
+                }
+            }  
+            if(ift == 116)
+            {
+                FILE* out = fopen("spiralT.txt", "r");
+                if(!out) printf("Ошибка при чтении\n"); 
+                
+                else{
+                    int sizex, sizey;
+                    fscanf(out, "%d", &sizex);
+                    fscanf(out, "%d", &sizey);
+                    for(int i = 0; i < sizex; i++)
+                    {
+                        for(int j = 0; j < sizey; j++)
+                            {
+                                fscanf(out, "%d", &result[sizex][sizey]);
+                                printf("%3d ", result[sizex][sizey]);
+                            }
+                        printf("\n");
+                    }
+                    printf("\n\n");
+                    fclose(out);
+                }
+
+            }          
         }
     }
     return 0;
